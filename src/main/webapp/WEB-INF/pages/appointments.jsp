@@ -6,108 +6,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script>
-var endDate;
-var startDate;
 $(document).ready(function() {
-	var t = $('#example').DataTable();
-	t.column( 0 ).visible( false );
-	t.column( 4 ).visible( false );
-	
-	$('#deleteRow').attr("disabled", true);
-	$('#editRow').attr("disabled", true);
-	$('#endTime').attr("disabled", true);
-	$(function() {
-	    $('#endTime').datetimepicker();
-	    $('#startTime').datetimepicker({
-	      useCurrent: true //Important! See issue #1075
-	    });
-	    
-	    $("#startTime").on("dp.change", function(e) {
-	    	var d = new Date(e.date);
-	    	d.setHours(d.getHours()+1);
-	      $('#endTime').data("DateTimePicker").minDate(e.date);
-	      $('#endTime').data("DateTimePicker").maxDate(d);
-	      $('#endTime').attr("disabled", false);
-	    });
-	  });
-	
-	$('#endTime').datetimepicker({
-		format: 'DD-MM-YYYY HH:mm',
-        disabledTimeIntervals: [[moment({ h: 0 }), moment({ h: 8 })], [moment({ h: 19, m: 30}), moment({ h: 24 })]],
-        enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-        stepping: 30
-    });
-	$('#startTime').datetimepicker({
-		format: 'DD-MM-YYYY HH:mm',
-        disabledTimeIntervals: [[moment({ h: 0 }), moment({ h: 8 })], [moment({ h: 19, m: 30}), moment({ h: 24 })]],
-        enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-        stepping: 30
+	var appointmentRest = "/api/appointment/";
+	var doctorRest = "/api/doctor/";
+	var t = $('#appointmentTable').DataTable( {
+		"order": [[ 0, "desc" ]]
     });
 	
-	 $('#example tbody').on( 'click', 'tr', function () {
-	     if ( $(this).hasClass('selected') ) {
-	         $(this).removeClass('selected');
-	         $('#deleteRow').attr("disabled", true);
-	         $('#editRow').attr("disabled", true);
-	     } else {
-	         t.$('tr.selected').removeClass('selected');
-	         $(this).addClass('selected');
-	         $('#deleteRow').attr("disabled", false);
-	         $('#editRow').attr("disabled", false);
-	     }
-	 } );
-	 
-	 $('#deleteRow').on( 'click', function () {
-			$.ajax({
-				   url: "/api/appointment/"+t.rows('.selected').data()[0][0],
-				   type: "DELETE",
-				   success: function (data) {
-					   t.row('.selected').remove().draw( false );
-				   },
-				   failure: function (response) {
-				      alert("Delete failed");
-				   }
-				});
-		});
-	 
-	 $('#editRow').on( 'click', function () {
-		 $('#patientId').val(t.rows('.selected').data()[0][0]);
-		 $('#patientName').val(t.rows('.selected').data()[0][1]);
-		 $('#email').val(t.rows('.selected').data()[0][3]);
-		 $('#phone').val(t.rows('.selected').data()[0][2]);
-		 $('#drName').val(t.rows('.selected').data()[0][4]);
-		 $('#startDate').val(t.rows('.selected').data()[0][9]);
-		 $('#endDate').val(t.rows('.selected').data()[0][10]);
-	});	 
-	 
-	 $.ajax({
-	        type: "GET",
-	        url:"/api/doctor/",
-	        dataType: "json",
-	        success: function (responseData) {
-	        	var div_data;
-	        	for (var i in responseData) 
-	            {
-	             	div_data+="<option value=\""+responseData[i].id+"\">"+responseData[i].name+"</option>";
-	            }
-	        	console.log("div_data: "+ div_data);
-	        	$('#drName').append(div_data); 
-	        }
-	      });
+	var endTimeId = $('#endTime');
+	var startTimeId = $('#startTime');
+	hideColumnById(t, 4);
+	hideColumnById(t, 7);
+	hideColumnById(t, 8);
 	
+	disableButton($('#deleteRow'));
+	disableButton($('#editRow'));
+	tableSelectDeselectFunction($('#appointmentTable tbody'), t, $('#editRow'), $('#deleteRow'))
+	
+	var todayDate = new Date();
+    $('#startTime').datetimepicker({
+    	format: 'DD-MM-YYYY HH:mm',
+	    minDate: todayDate //Important! See issue #1075
+    });
+	
+	disableButton(endTimeId);
+	startTimeId.on("dp.change", function(e) {
+    	var d = new Date(e.date);
+    	d.setHours(d.getHours()+1);
+      endTimeId.data("DateTimePicker").minDate(e.date);
+      endTimeId.data("DateTimePicker").maxDate(d);
+      enableButton(endTimeId);
+    });
+	
+	setDateTimePickerFixedValues(endTimeId);
+	setDateTimePickerFixedValues(startTimeId);
+	
+	deleteRowTask(t, $('#deleteRow'), appointmentRest);
+	 
+	$('#editRow').on( 'click', function () {
+		$('#patientId').val(t.rows('.selected').data()[0][0]);
+		$('#patientName').val(t.rows('.selected').data()[0][1]);
+		$('#email').val(t.rows('.selected').data()[0][3]);
+		$('#phone').val(t.rows('.selected').data()[0][2]);
+		$('#drName').val(t.rows('.selected').data()[0][4]);
+		$('#startDate').val(t.rows('.selected').data()[0][9]);
+		$('#endDate').val(t.rows('.selected').data()[0][10]);
+	});
+	 
+	$.ajax({
+		type: "GET",
+		url: doctorRest,
+		dataType: "json",
+		success: function (responseData) {
+			var div_data;
+			for (var i in responseData) {
+				div_data+="<option value=\""+responseData[i].id+"\">"+responseData[i].name+"</option>";
+			}
+			$('#drName').append(div_data); 
+		},
+		error : function(request, status, errorThrown, responseText) {
+			console.log("--------deleteRowTask-----------");
+			console.log("request: " + request);
+			console.log("status: " + status);
+			console.log("errorThrown: " + errorThrown);
+			console.log("responseText: " + responseText);
+		}
+	});
 	
 	$.ajax({
         type: "GET",
-        url: "/api/appointment",
+        url: appointmentRest,
         success: function (responseData) {
-        	//var json_obj = $.parseJSON(responseData);//parse JSON
-        	
-            for (var i in responseData) 
-            {
+            for (var i in responseData) {
             	if(responseData[i].doctor != null) {
 	            	var appointmentList = responseData[i].doctor.appointments;
-	            	
-	            	console.log("start of responseData");
+	            	/* console.log("start of responseData");
 	           		console.log(responseData[i].id);
 	           		console.log(responseData[i].name);
 	           		console.log(responseData[i].contactNumber);
@@ -119,7 +92,7 @@ $(document).ready(function() {
 	           		console.log(responseData[i].doctor.contactNumber);
 	           		console.log(responseData[i].startTime);
 	           		console.log(responseData[i].endTime);
-	           		console.log("end of responseData");
+	           		console.log("end of responseData"); */
 	           		
 	           		t.row.add( [
 	           			responseData[i].id,
@@ -139,7 +112,7 @@ $(document).ready(function() {
 	           		if(appointmentList.length > 1 && appointmentList != undefined) {
 		            	for (var j in appointmentList) {
 		            		if(j != 0) {
-			            		console.log("start of appointments")
+			            		/* console.log("start of appointments")
 			            		console.log(responseData[i].doctor.appointments[j].id);
 			            		console.log(responseData[i].doctor.appointments[j].name);
 			            		console.log(responseData[i].doctor.appointments[j].contactNumber);
@@ -151,7 +124,7 @@ $(document).ready(function() {
 			            		console.log(responseData[i].doctor.contactNumber);
 			            		console.log(responseData[i].doctor.appointments[j].startTime);
 			            		console.log(responseData[i].doctor.appointments[j].endTime);
-			            		console.log("end of appointments");
+			            		console.log("end of appointments"); */
 			            		
 			            		t.row.add( [
 			            			responseData[i].doctor.appointments[j].id,
@@ -173,36 +146,42 @@ $(document).ready(function() {
             	}
             }
         },
-        error: function (request, status, error) {
-        	console.log(request);
-        	console.log(status);
-        	console.log(error);
-        }
+        error : function(request, status, errorThrown, responseText) {
+			console.log("--------Get appointment data-----------");
+			console.log("request: " + request);
+			console.log("status: " + status);
+			console.log("errorThrown: " + errorThrown);
+			console.log("responseText: " + responseText);
+		}
     });
 
 	$('#bookAppointmentForm').submit(function () {
 		$.ajax({
-			   url: "/api/appointment",
-			   type: "PUT",
-			   contentType: "application/json",
-			   data : JSON.stringify({
-				    id : $('#patientId').val(),
-				    name : $("#patientName").val(),
-				   	email : $("#email").val(),
-				   	contactNumber : $("#phone").val(),
-				   	doctor : {
-				   		id : $("#drName").val()
-				   	},
-				   	startTime : $('#startDate').val(),
-				   	endTime : $('#endDate').val()}),
-			   dataType : 'json',
-			   success: function (data) {
-				   alert(success);
-			   },
-			   failure: function (response) {
-			      alert("call failed");
-			   }
-			});
+			url: appointmentRest,
+			type: "PUT",
+			contentType: "application/json",
+			data : JSON.stringify({
+				id : $('#patientId').val(),
+				name : $("#patientName").val(),
+				email : $("#email").val(),
+				contactNumber : $("#phone").val(),
+				doctor : {
+					id : $("#drName").val()
+				},
+				startTime : $('#startDate').val(),
+				endTime : $('#endDate').val()}),
+			dataType : 'json',
+			success: function (data) {
+				console.log("--Successful submission of appointment form data--");
+			},
+			error : function(request, status, errorThrown, responseText) {
+				console.log("----submission of appointment form data-----");
+				console.log("request: " + request);
+				console.log("status: " + status);
+				console.log("errorThrown: " + errorThrown);
+				console.log("responseText: " + responseText);
+			}
+		});
 	});
 });
 </script>
@@ -269,15 +248,15 @@ $(document).ready(function() {
 		</div>
 	</div>
 
-	<table id="example"
+	<table id="appointmentTable"
 		class="table table-striped table-bordered dt-responsive"
 		style="width: 100%">
 		<thead>
 			<tr>
 				<th>Id</th>
 				<th>Name</th>
-				<th>E-mail</th>
 				<th>Phone</th>
+				<th>Email</th>
 				<th>Dr. Id</th>
 				<th>Dr. Name</th>
 				<th>Dr. Type</th>

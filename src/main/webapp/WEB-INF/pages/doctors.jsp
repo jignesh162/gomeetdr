@@ -7,49 +7,23 @@
 
 <script>
 $(document).ready(function() {
-	var t = $('#example').DataTable( {
+	var rest = "/api/doctor/";
+	var t = $('#doctorTable').DataTable( {
 		"order": [[ 0, "desc" ]]
     } );
-	t.column( 0 ).visible( false );
-	$('#deleteRow').attr("disabled", true);
-	$('#editRow').attr("disabled", true);
+	hideColumnById(t, 0);
+	disableButton($('#deleteRow'));
+	disableButton($('#editRow'));
+	tableSelectDeselectFunction($('#doctorTable tbody'), t, $('#editRow'), $('#deleteRow'));
 	
-	 t.column( 0 ).visible( true );
-	 
-	 $('#example tbody').on( 'click', 'tr', function () {
-	     if ( $(this).hasClass('selected') ) {
-	         $(this).removeClass('selected');
-	         $('#deleteRow').attr("disabled", true);
-	         $('#editRow').attr("disabled", true);
-	     } else {
-	         t.$('tr.selected').removeClass('selected');
-	         $(this).addClass('selected');
-	         $('#deleteRow').attr("disabled", false);
-	         $('#editRow').attr("disabled", false);
-	     }
-	 } );
-	 
-	 $('#addDrModal').on('hidden.bs.modal', function () {
-		 alert("hi");
+	//TODO Need to test this....
+	$('#addDrModal').on('hidden.bs.modal', function () {
 		 $("#addDrModal").get(0).reset();
-		    alert("bye");
-	 });
+	});
 	 
-	 $('#deleteRow').on( 'click', function () {
-			$.ajax({
-				   url: "/api/doctor/"+t.rows('.selected').data()[0][0],
-				   type: "DELETE",
-				   success: function (data) {
-					   t.row('.selected').remove().draw( false );
-				   },
-				   failure: function (response) {
-				      alert("Delete failed");
-				   }
-				});
-		});
-	 
-	 
-	 $('#editRow').on( 'click', function () {
+	deleteRowTask(t, $('#deleteRow'), rest);
+
+	$('#editRow').on( 'click', function () {
 		 $('#drid').val(t.rows('.selected').data()[0][0]);
 		 $('#drname').val(t.rows('.selected').data()[0][1]);
 		 $('#dremail').val(t.rows('.selected').data()[0][2]);
@@ -57,49 +31,53 @@ $(document).ready(function() {
 		 $('#drtype').val(t.rows('.selected').data()[0][4]);
 	});
 	
-	
 	$.ajax({
-        type: "GET",
-        url: "/api/doctor",
-        success: function (responseData) {
-        	//var json_obj = $.parseJSON(responseData);//parse JSON
-            
-            for (var i in responseData) 
-            {
-            	t.row.add( [
-            		responseData[i].id,
-            		responseData[i].name,
-            		responseData[i].email,
-            		responseData[i].contactNumber,
-            		responseData[i].type
-        		] ).draw( false );
-            }
-        },
-        error: function (request, status, error) {
-        	console.log(request);
-        	console.log(status);
-        	console.log(error);
-        }
-    });
+		type: "GET",
+		url: rest,
+		success: function (responseData) {
+			for (var i in responseData) {
+			t.row.add( [
+				responseData[i].id,
+				responseData[i].name,
+				responseData[i].email,
+				responseData[i].contactNumber,
+				responseData[i].type
+				] ).draw( false );
+			}
+		},
+		error : function(request, status, errorThrown, responseText) {
+			console.log("--------Get doctors list----------");
+			console.log("request: " + request);
+			console.log("status: " + status);
+			console.log("errorThrown: " + errorThrown);
+			console.log("responseText: " + responseText);
+		}
+	});
 
 	$('#addDoctorForm').submit(function () {
 		$.ajax({
-			   url: "/api/doctor",
-			   type: "PUT",
-			   contentType: "application/json",
-			   data : JSON.stringify({
-				    id : $('#drid').val(),
+			url: rest,
+			type: "PUT",
+			contentType: "application/json",
+			data : JSON.stringify({
+					id : $('#drid').val(),
 					name : $("#drname").val(),
-				   	type : $("#drtype").val(),
-				   	email : $("#dremail").val(),
-				   	contactNumber : $("#drphone").val()}),
-			   dataType : 'json',
-			   success: function (data) {
-			   },
-			   failure: function (response) {
-			      alert("call failed");
-			   }
-			});
+					type : $("#drtype").val(),
+					email : $("#dremail").val(),
+					contactNumber : $("#drphone").val()
+				}),
+			dataType : 'json',
+			success: function (data) {
+				console.log("--Successful submission of doctor form data--");
+			},
+			error : function(request, status, errorThrown, responseText) {
+				console.log("--------Submit doctor form data----------");
+				console.log("request: " + request);
+				console.log("status: " + status);
+				console.log("errorThrown: " + errorThrown);
+				console.log("responseText: " + responseText);
+			}
+		});
 	});	
 });
 </script>
@@ -162,7 +140,7 @@ $(document).ready(function() {
 	</div>
 
 
-	<table id="example"
+	<table id="doctorTable"
 		class="table table-striped table-bordered dt-responsive"
 		style="width: 100%">
 		<thead>

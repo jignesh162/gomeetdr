@@ -12,8 +12,7 @@ $(document).ready(function() {
 		"order": [[ 4, "desc" ]]
     });
 	
-	//Hide Id columns and not required columns
-    t.column( 0 ).visible( false );
+	hideColumnById(t, 0);
 	
 	$("#drName").on('change', function(){
 		t.clear().draw();
