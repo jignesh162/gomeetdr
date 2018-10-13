@@ -15,43 +15,45 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+/**
+ * @author parvajig
+ *
+ */
 @Entity
-@JsonIdentityInfo(
-		  generator = ObjectIdGenerators.PropertyGenerator.class, 
-		  property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Appointment implements Serializable {
 
 	private static final long serialVersionUID = 8135449394063890134L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	private String name;
-	
+
 	@NotNull
 	private String contactNumber;
-	
+
 	private String email;
 
 	@ManyToOne
-    @JoinColumn(name = "doctor_id")
+	@JoinColumn(name = "doctor_id")
 	@NotNull
 	private Doctor doctor;
-	
+
 	@NotNull
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date startTime;
-	
+
 	@NotNull
-	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date endTime;
 
 	public Appointment() {
 		super();
 	}
-	
+
 	public Appointment(Long id, String name, String contactNumber, String email, Doctor doctor, Date startTime,
 			Date endTime) {
 		super();
@@ -119,5 +121,4 @@ public class Appointment implements Serializable {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-
 }

@@ -13,35 +13,72 @@ import com.gomeetdr.modal.Appointment;
 import com.gomeetdr.service.AppointmentService;
 import com.gomeetdr.utils.NotFoundException;
 
+/**
+ * The rest controller for the appointments.
+ * 
+ * @author parvajig
+ *
+ */
 @RestController
-@RequestMapping(path="/api/appointment")
+@RequestMapping(path = "/api/appointment")
 public class AppointmentController {
 
 	@Autowired
 	private AppointmentService service;
-	
-	@RequestMapping(method= RequestMethod.GET) 
-	public Iterable<Appointment> getAllAppointments(){
+
+	/**
+	 * Get all the appointments list.
+	 * 
+	 * @return The list of an appointment
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public Iterable<Appointment> getAllAppointments() {
 		return service.getAll();
 	}
-	
-	@RequestMapping(path="/{id}", method= RequestMethod.GET) 
-	public Appointment getAppointment(@PathVariable Long id) throws NotFoundException{
+
+	/**
+	 * Get an appointment by id.
+	 * 
+	 * @param id The id of an appointment
+	 * @return The Appointment
+	 * @throws NotFoundException Throw an exception if the id could not found.
+	 */
+	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	public Appointment getAppointment(@PathVariable Long id) throws NotFoundException {
 		return service.get(id);
 	}
-	
-	@RequestMapping(path="/{id}", method= RequestMethod.DELETE) 
-	public void deleteAppointment(@PathVariable Long id) throws NotFoundException{
-		service.delete(id);
+
+	/**
+	 * Delete an appointment by id
+	 * 
+	 * @param id The id of appointment
+	 * @throws NotFoundException Throw an exception if the id could not found.
+	 */
+	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+	public void deleteAppointment(@PathVariable Long id) throws NotFoundException {
+		service.deleteAppointment(id);
 	}
-	
-	@RequestMapping(method= RequestMethod.PUT) 
-	public Appointment createOrUpdate(@Valid @RequestBody Appointment appointment){
+
+	/**
+	 * Create or update an appointment
+	 * 
+	 * @param appointment The appointment object
+	 * @return Appointment The appointment object after create/update
+	 */
+	@RequestMapping(method = RequestMethod.PUT)
+	public Appointment createOrUpdate(@Valid @RequestBody Appointment appointment) {
 		return service.create(appointment);
 	}
-	
-	@RequestMapping(method= RequestMethod.POST) 
-	public Appointment update(@Valid @RequestBody Appointment appointment) throws NotFoundException{
+
+	/**
+	 * Update an appointment
+	 * 
+	 * @param appointment The appointment object
+	 * @return Appointment The appointment object after update
+	 * @throws NotFoundException Throw an exception if the object is totally new.
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public Appointment update(@Valid @RequestBody Appointment appointment) throws NotFoundException {
 		return service.update(appointment);
 	}
 }
