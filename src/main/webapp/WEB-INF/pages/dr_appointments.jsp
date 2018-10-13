@@ -9,7 +9,7 @@
 
 $(document).ready(function() {
 	var t = $('#example').DataTable( {
-		"order": [[ 5, "asc" ]]
+		"order": [[ 4, "desc" ]]
     });
 	
 	//Hide Id columns and not required columns
@@ -86,7 +86,7 @@ $(document).ready(function() {
 
 <div>
   <label for="drName"><span class="glyphicon glyphicon-plus"></span> Select Doctor: </label>
-  <select data-size="7" data-live-search="true" class="custom_selectbox selectpicker btn-primary fill_selectbtn_in own_selectbox" data-title="Location" id="state_list" data-width="100%" id="drName">
+  <select class="selectpicker btn-primary" id="drName">
   	<option value="0"></option>
   </select>
 </div>
@@ -98,8 +98,8 @@ $(document).ready(function() {
 			<tr>
 				<th>Id</th>
 				<th>Patient Name</th>
-				<th>E-mail</th>
 				<th>Phone</th>
+				<th>E-mail</th>
 				<th>Start time</th>
 				<th>End time</th>
 			</tr>

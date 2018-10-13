@@ -8,13 +8,13 @@
 <script>
 $(document).ready(function() {
 	var t = $('#example').DataTable( {
-		"order": [[ 1, "desc" ]]
+		"order": [[ 0, "desc" ]]
     } );
 	t.column( 0 ).visible( false );
 	$('#deleteRow').attr("disabled", true);
 	$('#editRow').attr("disabled", true);
 	
-	 t.column( 0 ).visible( false );
+	 t.column( 0 ).visible( true );
 	 
 	 $('#example tbody').on( 'click', 'tr', function () {
 	     if ( $(this).hasClass('selected') ) {
