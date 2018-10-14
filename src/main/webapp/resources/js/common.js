@@ -64,7 +64,25 @@ function setDateTimePickerFixedValues(dateTimePickerId) {
     });
 }
 
-
-
-
-
+var settings;
+if (deleteForm) {
+    // DELETE for deleting
+    settings = {
+        contentType : "application/json",
+        type : "POST",
+        headers : {
+            "X-HTTP-Method-Override" : "DELETE"
+        }
+    };
+} else {
+    // POST for creating new, PUT for updating.
+    settings = {
+        contentType : "application/json",
+        dataType : "json",
+        data : JSON.stringify($(this).serializeObject()),
+        type : "POST",
+        headers : {
+            "X-HTTP-Method-Override" : (id === "" || cloneForm) ? "POST" : "PUT"
+        }
+    };
+}

@@ -1,6 +1,7 @@
 package com.gomeetdr.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,11 @@ public class AppointmentService {
 		if (!appointmentRepo.exists(id)) {
 			throw new NotFoundException("Could not delete an appointment because given id does not exists");
 		}
+		try {
 		appointmentRepo.delete(id);
+	} catch (DataIntegrityViolationException e) {
+		throw new NotFoundException("Could not delete doctor because there are already some appoinments booked with this doctor.");
+	}
 	}
 
 	/**

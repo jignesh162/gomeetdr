@@ -3,7 +3,6 @@ package com.gomeetdr.modal;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
+ * The entity class for the doctors.
+ * 
  * @author parvajig
  *
  */
@@ -42,7 +43,7 @@ public class Doctor implements Serializable {
 
 	private String contactNumber;
 
-	@OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
 	private List<Appointment> appointments;
 
 	public Doctor() {

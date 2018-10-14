@@ -22,3 +22,8 @@ body {
 .modal-body {
 	padding: 20px 30px;
 }
+
+#mynavbar-nav li:hover {
+  background-color: #ffffff;
+  color: #EEA200;
+}

@@ -47,7 +47,7 @@ public class DoctorController {
 	 * @return The Doctor
 	 * @throws NotFoundException Throw an exception if the id could not found.
 	 */
-	@RequestMapping(method = RequestMethod.GET, value= "/{id}")
+	@RequestMapping(value= "/{id}", method = RequestMethod.GET)
 	public Doctor getDoctor(@PathVariable Long id) throws NotFoundException {
 		return doctorService.getDoctor(id);
 	}
@@ -83,7 +83,7 @@ public class DoctorController {
 	 * @throws CanNotDeleteDoctor 
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void deleteDoctor(@PathVariable Long id) throws NotFoundException, CanNotDeleteDoctor {
+	public void deleteDoctor(@PathVariable Long id) throws NotFoundException {
 		doctorService.deleteDoctor(id);
 	}
 	

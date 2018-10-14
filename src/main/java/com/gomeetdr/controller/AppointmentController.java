@@ -20,7 +20,7 @@ import com.gomeetdr.utils.NotFoundException;
  *
  */
 @RestController
-@RequestMapping(path = "/api/appointment")
+@RequestMapping("/api/appointment")
 public class AppointmentController {
 
 	@Autowired
@@ -43,7 +43,7 @@ public class AppointmentController {
 	 * @return The Appointment
 	 * @throws NotFoundException Throw an exception if the id could not found.
 	 */
-	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Appointment getAppointment(@PathVariable Long id) throws NotFoundException {
 		return service.get(id);
 	}
@@ -54,7 +54,7 @@ public class AppointmentController {
 	 * @param id The id of appointment
 	 * @throws NotFoundException Throw an exception if the id could not found.
 	 */
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteAppointment(@PathVariable Long id) throws NotFoundException {
 		service.deleteAppointment(id);
 	}

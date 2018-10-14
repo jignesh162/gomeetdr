@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
+ * The entity class for the appointments.
+ * 
  * @author parvajig
  *
  */

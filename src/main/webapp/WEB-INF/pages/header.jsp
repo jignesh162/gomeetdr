@@ -32,10 +32,10 @@
 	    </div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
 		    <ul class="nav navbar-nav" id="mynavbar-nav">
-		      <li id="homeli"><a href="/home">Home</a></li>
-		      <li id="doctorsli"><a href="/doctors">Doctor</a></li>
-		      <li id="appointmentsli"><a href="/appointments">Appointment</a></li>
-		      <li id="dr_appointmentsli"><a href="/dr_appointments">Dr-Appointment</a></li>
+		      <li><a href="/home">Home</a></li>
+		      <li><a href="/doctors">Doctor</a></li>
+		      <li><a href="/appointments">Appointment</a></li>
+		      <li><a href="/dr_appointments">Dr-Appointment</a></li>
 		    </ul>
 	    </div>
 	  </div>
