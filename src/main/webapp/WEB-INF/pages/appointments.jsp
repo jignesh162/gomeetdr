@@ -25,23 +25,15 @@ $(document).ready(function() {
 	disableButton($('#editRow'));
 	tableSelectDeselectFunction($('#appointmentTable tbody'), t, $('#editRow'), $('#deleteRow'))
 	
-	var todayDate = new Date();
-    $('#startTime').datetimepicker({
-    	format: 'DD-MM-YYYY HH:mm',
-	    minDate: todayDate //Important! See issue #1075
-    });
-	
-	disableButton(endTimeId);
-	startTimeId.on("dp.change", function(e) {
-    	var d = new Date(e.date);
-    	d.setHours(d.getHours()+1);
-      endTimeId.data("DateTimePicker").minDate(e.date);
-      endTimeId.data("DateTimePicker").maxDate(d);
-      enableButton(endTimeId);
-    });
-	
-	setDateTimePickerFixedValues(endTimeId);
 	setDateTimePickerFixedValues(startTimeId);
+	setDateTimePickerFixedValues(endTimeId);
+	
+	startTimeId.on("dp.change", function(e) {
+	   	var d = new Date(e.date);
+	   	d.setHours(d.getHours()+1);
+    
+		endTimeId.data("DateTimePicker").date(d);
+    });
 	
 	deleteRowTask(t, $('#deleteRow'), appointmentRest);
 	 
@@ -200,7 +192,7 @@ $(document).ready(function() {
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">Add appointment</h4>
 				</div>
-				<div class="modal-body" style="padding:40px 50px;">
+				<div class="modal-body">
 			          <form role="form" id="bookAppointmentForm">
 			          	<div class="form-group">
 			              <input type="hidden" id="patientId" name="patientId" value="0">
@@ -233,7 +225,7 @@ $(document).ready(function() {
 						<div class="form-group">
 						<label for="endTime"><span class="glyphicon glyphicon-time"></span> End Time</label>
 					        <div class='input-group date' id='endTime'>
-					          <input type='text' class="form-control" id="endDate" required/>
+					          <input type='text' class="form-control" id="endDate" required disabled/>
 					          <span class="input-group-addon">
 					                        <span class="glyphicon glyphicon-calendar"></span>
 					          </span>

@@ -97,7 +97,7 @@ $(document).ready(function() {
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">Add doctor</h4>
 				</div>
-				<div class="modal-body" style="padding: 40px 50px;">
+				<div class="modal-body">
 					<form role="form" id="addDoctorForm">
 						<div class="form-group">
 							<input type="hidden" id="drid" name="drid" value="0">

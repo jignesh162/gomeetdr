@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gomeetdr.modal.Appointment;
 import com.gomeetdr.modal.Doctor;
 import com.gomeetdr.service.DoctorService;
+import com.gomeetdr.utils.CanNotDeleteDoctor;
 import com.gomeetdr.utils.NotFoundException;
 
 /**
@@ -79,9 +80,10 @@ public class DoctorController {
 	 * 
 	 * @param id The id of doctor
 	 * @throws NotFoundException Throw an exception if the id could not found.
+	 * @throws CanNotDeleteDoctor 
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void deleteDoctor(@PathVariable Long id) throws NotFoundException {
+	public void deleteDoctor(@PathVariable Long id) throws NotFoundException, CanNotDeleteDoctor {
 		doctorService.deleteDoctor(id);
 	}
 	

@@ -51,16 +51,16 @@ function deleteRowTask(table, deleteButton, restUrl) {
 	});
 }
 
-//var todayDate = new Date();
+var todayDate = new Date();
 function setDateTimePickerFixedValues(dateTimePickerId) {
 	dateTimePickerId.datetimepicker({
 		format: 'DD-MM-YYYY HH:mm',
-		//minDate: todayDate,
+		minDate: todayDate,
 		//Here we have disabled time from 00:00-08:00 hours and 20:00-24:00 hours. That means user can only select timing between 08AM to 08PM.
-        disabledTimeIntervals: [[moment({ h: 0 }), moment({ h: 8 })], [moment({ h: 19, m: 30}), moment({ h: 24 })]],
+        disabledTimeIntervals: [[moment({ h: 0 }), moment({ h: 8 })], [moment({ h: 19}), moment({ h: 24 })]],
         enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
         //This setting will allow user to set minutes in multiple of 30 only.
-        stepping: 30
+        stepping: 60
     });
 }
 

@@ -84,7 +84,7 @@ $(document).ready(function() {
 </head>
 <body>
 	<label for="drName"><span class="glyphicon glyphicon-plus"></span> Select Doctor: </label>
-	<select class="selectpicker btn-primary" id="drName">
+	<select class="form-control selectpicker btn-primary" id="drName" style="width: auto">
 		<option value="0"></option>
 	</select>
 	<div id="drAppointmentsTableDiv">

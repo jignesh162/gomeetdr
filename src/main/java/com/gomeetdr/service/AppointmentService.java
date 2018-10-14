@@ -48,10 +48,10 @@ public class AppointmentService {
 	 * @throws NotFoundException
 	 */
 	public void deleteAppointment(Long id) throws NotFoundException {
-		if (appointmentRepo.exists(id)) {
-			appointmentRepo.delete(id);
+		if (!appointmentRepo.exists(id)) {
+			throw new NotFoundException("Could not delete an appointment because given id does not exists");
 		}
-		throw new NotFoundException("Could not delete an appointment because given id does not exists");
+		appointmentRepo.delete(id);
 	}
 
 	/**
