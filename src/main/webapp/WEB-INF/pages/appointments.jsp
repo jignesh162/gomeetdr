@@ -10,11 +10,13 @@ $(document).ready(function() {
 	var appointmentRest = "/api/appointment/";
 	var doctorRest = "/api/doctor/";
 	var t = $('#appointmentTable').DataTable( {
-		"order": [[ 0, "desc" ]]
+		"order": [[ 0, "desc" ]],
+		responsive: true
     });
 	
 	var endTimeId = $('#endTime');
 	var startTimeId = $('#startTime');
+	hideColumnById(t, 0);
 	hideColumnById(t, 4);
 	hideColumnById(t, 7);
 	hideColumnById(t, 8);
@@ -191,7 +193,6 @@ $(document).ready(function() {
 <button id="editRow" class="btn btn-warning btn-md" data-toggle="modal" data-target="#addDrModal">Edit</button>
 <button id="deleteRow" class="btn btn-danger btn-md">Delete</button>
 
-
 <div class="modal fade" id="addDrModal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -247,10 +248,8 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
-
-	<table id="appointmentTable"
-		class="table table-striped table-bordered dt-responsive"
-		style="width: 100%">
+<div id="appointmentTableDiv">
+	<table id="appointmentTable" class="table table-striped table-bordered responsive commonTable" style="width: 100%">
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -267,4 +266,5 @@ $(document).ready(function() {
 			</tr>
 		</thead>
 	</table>
+</div>
 </body>

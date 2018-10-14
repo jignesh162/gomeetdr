@@ -38,6 +38,7 @@ function deleteRowTask(table, deleteButton, restUrl) {
 			type : "DELETE",
 			success : function(data) {
 				table.row('.selected').remove().draw(false);
+				disableButton(deleteButton);
 			},
 			error : function(request, status, errorThrown, responseText) {
 				console.log("--------deleteRowTask-----------");

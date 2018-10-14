@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="/resources/css/common.css">
 
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -27,7 +28,7 @@
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>                        
 	    </button>
-	      <a class="navbar-brand" href="/home">GoMeetDoctor</a>
+	      <a class="navbar-brand" href="/home"><img src="/resources/img/logo.jpg" width="120" height="30" alt="GoMeetDr"></a>
 	    </div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
 		    <ul class="nav navbar-nav" id="mynavbar-nav">

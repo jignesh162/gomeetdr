@@ -8,8 +8,9 @@
 <script>
 
 $(document).ready(function() {
-	var t = $('#example').DataTable( {
-		"order": [[ 4, "desc" ]]
+	var t = $('#drAppointmentsTable').DataTable( {
+		"order": [[ 4, "desc" ]],
+		responsive: true
     });
 	
 	hideColumnById(t, 0);
@@ -82,27 +83,22 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-
-<div>
-  <label for="drName"><span class="glyphicon glyphicon-plus"></span> Select Doctor: </label>
-  <select class="selectpicker btn-primary" id="drName">
-  	<option value="0"></option>
-  </select>
-</div>
-<div>
-	<table id="example"
-		class="table table-striped table-bordered dt-responsive"
-		style="width: 100%">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Patient Name</th>
-				<th>Phone</th>
-				<th>E-mail</th>
-				<th>Start time</th>
-				<th>End time</th>
-			</tr>
-		</thead>
-	</table>
+	<label for="drName"><span class="glyphicon glyphicon-plus"></span> Select Doctor: </label>
+	<select class="selectpicker btn-primary" id="drName">
+		<option value="0"></option>
+	</select>
+	<div id="drAppointmentsTableDiv">
+		<table id="drAppointmentsTable" class="table table-striped table-bordered dt-responsive commonTable" style="width: 100%">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Patient Name</th>
+					<th>Phone</th>
+					<th>E-mail</th>
+					<th>Start time</th>
+					<th>End time</th>
+				</tr>
+			</thead>
+		</table>
 	</div>
 </body>

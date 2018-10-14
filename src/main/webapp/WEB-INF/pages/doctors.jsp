@@ -9,7 +9,8 @@
 $(document).ready(function() {
 	var rest = "/api/doctor/";
 	var t = $('#doctorTable').DataTable( {
-		"order": [[ 0, "desc" ]]
+		"order": [[ 0, "desc" ]],
+		responsive: true
     } );
 	hideColumnById(t, 0);
 	disableButton($('#deleteRow'));
@@ -83,13 +84,11 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-	<div class="pull-center">
-		<button id="addRow" class="btn btn-success btn-md" data-toggle="modal"
-			data-target="#addDrModal">Add</button>
-		<button id="editRow" class="btn btn-warning btn-md"
-			data-toggle="modal" data-target="#addDrModal">Edit</button>
-		<button id="deleteRow" class="btn btn-danger btn-md">Delete</button>
-	</div>
+	<button id="addRow" class="btn btn-success btn-md" data-toggle="modal"
+		data-target="#addDrModal">Add</button>
+	<button id="editRow" class="btn btn-warning btn-md"
+		data-toggle="modal" data-target="#addDrModal">Edit</button>
+	<button id="deleteRow" class="btn btn-danger btn-md">Delete</button>
 
 	<div class="modal fade" id="addDrModal" role="dialog">
 		<div class="modal-dialog">
@@ -139,10 +138,8 @@ $(document).ready(function() {
 		</div>
 	</div>
 
-
-	<table id="doctorTable"
-		class="table table-striped table-bordered dt-responsive"
-		style="width: 100%">
+<div id="doctorTableDiv">
+	<table id="doctorTable" class="table table-striped table-bordered dt-responsive commonTable" style="width: 100%">
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -153,4 +150,5 @@ $(document).ready(function() {
 			</tr>
 		</thead>
 	</table>
+</div>
 </body>
