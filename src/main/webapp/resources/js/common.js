@@ -50,6 +50,23 @@ function deleteRowTask(table, deleteButton, editButton, restUrl) {
 	});
 }
 
+function deleteAllAppointmentsByDrId(table, deleteButton, editButton, restUrl) {
+	$.ajax({
+		url : "/api/appointment/doctor/" + table.rows('.selected').data()[0][0],
+		type : "DELETE",
+		success : function(data) {
+			deleteRowTask(table, deleteButton, editButton, restUrl);
+		},
+		error : function(request, status, errorThrown, responseText) {
+			console.log("--------deleteRowTask-----------");
+			console.log("request: " + request);
+			console.log("status: " + status);
+			console.log("errorThrown: " + errorThrown);
+			console.log("responseText: " + responseText);
+		}
+	});
+}
+
 function setDateTimePickerFixedValues(dateTimePickerId) {
 	dateTimePickerId.datetimepicker({
 		format: 'DD-MM-YYYY HH:mm',

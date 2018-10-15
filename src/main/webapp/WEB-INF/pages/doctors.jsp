@@ -28,10 +28,13 @@ $(document).ready(function() {
 			type : "GET",
 			success : function(data) {
 				if (data != 0) {
-					//TODO Want to show confirmation dialog here
 					var drName = t.rows('.selected').data()[0][1];
-					alert(drName +" has already appointments booked with him/her.\n"+
+					//TODO Want to show better confirmation dialog here
+					var confirmed = confirm(drName +" has already appointments booked with him/her.\n"+
 							"If you really want to delete this entry then you have to first delete all those appointments.");
+					if (confirmed == true) {
+						deleteAllAppointmentsByDrId(t, $('#deleteRow'), $('#editRow'), rest);
+					}
 				} else {
 					deleteRowTask(t, $('#deleteRow'), $('#editRow'), rest);
 				}
