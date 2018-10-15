@@ -48,7 +48,7 @@ public class DoctorService {
 		doctorRepository.delete(id);
 	}
 
-	public List<Appointment> GetAppointments(Long id) throws NotFoundException {
+	public List<Appointment> getAppointments(Long id) throws NotFoundException {
 		if (doctorRepository.exists(id)) {
 			return doctorRepository.findOne(id).getAppointments();
 		}

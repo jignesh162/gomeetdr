@@ -96,6 +96,6 @@ public class DoctorController {
 	 */
 	@RequestMapping(value = "/{id}/appointments", method = RequestMethod.GET)
 	public List<Appointment> getAppointments(@PathVariable Long id) throws NotFoundException {
-		return doctorService.GetAppointments(id);
+		return doctorService.getAppointments(id);
 	}
 }
