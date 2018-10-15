@@ -35,7 +35,9 @@ $(document).ready(function() {
 		endTimeId.data("DateTimePicker").date(d);
     });
 	
-	deleteRowTask(t, $('#deleteRow'), appointmentRest);
+	$('#deleteRow').on('click', function() {
+		deleteRowTask(t, $('#deleteRow'), $('#editRow'), appointmentRest);
+	});
 	 
 	$('#editRow').on( 'click', function () {
 		$('#patientId').val(t.rows('.selected').data()[0][0]);

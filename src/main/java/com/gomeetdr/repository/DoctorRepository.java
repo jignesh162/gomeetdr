@@ -1,15 +1,14 @@
 package com.gomeetdr.repository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.gomeetdr.modal.Doctor;
 
 /**
- * The doctor repository interface. Here we can implement paging and sorting for
- * output.
+ * The doctor repository interface.
  * 
  * @author parvajig
  */
-public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Long> {
+public interface DoctorRepository extends CrudRepository<Doctor, Long> {
 
 }

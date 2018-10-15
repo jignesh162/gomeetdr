@@ -1,9 +1,6 @@
 package com.gomeetdr.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.gomeetdr.modal.Appointment;
@@ -38,8 +35,7 @@ public class AppointmentService {
 	 * @return The list of an appointment
 	 */
 	public Iterable<Appointment> getAll() {
-		Sort sort = new Sort(new Sort.Order(Direction.ASC, "id"));
-		return appointmentRepo.findAll(sort);
+		return appointmentRepo.findAll();
 	}
 
 	/**
@@ -53,6 +49,24 @@ public class AppointmentService {
 			throw new NotFoundException("Could not delete an appointment because given id does not exists");
 		}
 		appointmentRepo.delete(id);
+	}
+	
+	/**
+	 * Delete all appointments by doctor id
+	 * 
+	 * @param id The id of doctor
+	 */
+	public void deleteAppointmentsByDrId(Long id) {
+		appointmentRepo.deleteAppointmentsByDrId(id);
+	}
+	
+	/**
+	 * Count appointments by doctor id
+	 * 
+	 * @param id The id of doctor
+	 */
+	public Long countAppointmentsByDrId(Long id) {
+		return appointmentRepo.countAppointmentsByDrId(id);
 	}
 
 	/**
