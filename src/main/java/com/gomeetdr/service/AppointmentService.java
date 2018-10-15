@@ -46,17 +46,13 @@ public class AppointmentService {
 	 * Delete an appointment by id
 	 * 
 	 * @param id The id of appointment
-	 * @throws NotFoundException
+	 * @throws NotFoundException Throw an exception if the id could not found.
 	 */
 	public void deleteAppointment(Long id) throws NotFoundException {
 		if (!appointmentRepo.exists(id)) {
 			throw new NotFoundException("Could not delete an appointment because given id does not exists");
 		}
-		try {
 		appointmentRepo.delete(id);
-	} catch (DataIntegrityViolationException e) {
-		throw new NotFoundException("Could not delete doctor because there are already some appoinments booked with this doctor.");
-	}
 	}
 
 	/**
