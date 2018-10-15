@@ -31,7 +31,8 @@ $(document).ready(function() {
 					var drName = t.rows('.selected').data()[0][1];
 					//TODO Want to show better confirmation dialog here
 					var confirmed = confirm(drName +" has already appointments booked with him/her.\n"+
-							"If you really want to delete this entry then you have to first delete all those appointments.");
+							"If you really want to delete this entry then you have to first delete all those appointments.\n"+
+							"Are you sure?");
 					if (confirmed == true) {
 						deleteAllAppointmentsByDrId(t, $('#deleteRow'), $('#editRow'), rest);
 					}
