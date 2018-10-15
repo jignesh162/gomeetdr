@@ -21,9 +21,31 @@ $(document).ready(function() {
 	$('#addDrModal').on('hidden.bs.modal', function () {
 		 $("#addDrModal").get(0).reset();
 	});
-	 
-	deleteRowTask(t, $('#deleteRow'), rest);
-
+	
+	$('#deleteRow').on('click', function() {
+		$.ajax({
+			url : "/api/appointment/doctor/" + t.rows('.selected').data()[0][0],
+			type : "GET",
+			success : function(data) {
+				if (data != 0) {
+					//TODO Want to show confirmation dialog here
+					var drName = t.rows('.selected').data()[0][1];
+					alert(drName +" has already appointments booked with him/her.\n"+
+							"If you really want to delete this entry then you have to first delete all those appointments.");
+				} else {
+					deleteRowTask(t, $('#deleteRow'), $('#editRow'), rest);
+				}
+			},
+			error : function(request, status, errorThrown, responseText) {
+				console.log("--------deleteRowTask-----------");
+				console.log("request: " + request);
+				console.log("status: " + status);
+				console.log("errorThrown: " + errorThrown);
+				console.log("responseText: " + responseText);
+			}
+		});
+	});
+	
 	$('#editRow').on( 'click', function () {
 		 $('#drid').val(t.rows('.selected').data()[0][0]);
 		 $('#drname').val(t.rows('.selected').data()[0][1]);

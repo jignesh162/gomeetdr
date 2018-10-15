@@ -3,8 +3,6 @@ package com.gomeetdr.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.gomeetdr.modal.Appointment;
@@ -37,8 +35,7 @@ public class DoctorService {
 	}
 
 	public Iterable<Doctor> getAllDoctors() {
-		Sort sort = new Sort(new Sort.Order(Direction.ASC, "id"));
-		return doctorRepository.findAll(sort);
+		return doctorRepository.findAll();
 	}
 
 	public void deleteDoctor(Long id) throws NotFoundException {

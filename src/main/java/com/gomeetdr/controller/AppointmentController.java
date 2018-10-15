@@ -58,6 +58,26 @@ public class AppointmentController {
 	public void deleteAppointment(@PathVariable Long id) throws NotFoundException {
 		service.deleteAppointment(id);
 	}
+	
+	/**
+	 * Delete all appointments by doctor id
+	 * 
+	 * @param id The id of doctor
+	 */
+	@RequestMapping(value = "/doctor/{id}", method = RequestMethod.DELETE)
+	public void deleteAppointmentsByDrId(@PathVariable Long id) {
+		service.deleteAppointmentsByDrId(id);
+	}
+	
+	/**
+	 * Count appointments by doctor id
+	 * 
+	 * @param id The id of doctor
+	 */
+	@RequestMapping(value = "/doctor/{id}", method = RequestMethod.GET)
+	public Long countAppointmentsByDrId(@PathVariable Long id) {
+		return service.countAppointmentsByDrId(id);
+	}
 
 	/**
 	 * Create or update an appointment

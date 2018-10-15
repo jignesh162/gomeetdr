@@ -31,23 +31,22 @@ function tableSelectDeselectFunction(tableWithTBody, table, editButton,
 	});
 }
 
-function deleteRowTask(table, deleteButton, restUrl) {
-	deleteButton.on('click', function() {
-		$.ajax({
-			url : restUrl + table.rows('.selected').data()[0][0],
-			type : "DELETE",
-			success : function(data) {
-				table.row('.selected').remove().draw(false);
-				disableButton(deleteButton);
-			},
-			error : function(request, status, errorThrown, responseText) {
-				console.log("--------deleteRowTask-----------");
-				console.log("request: " + request);
-				console.log("status: " + status);
-				console.log("errorThrown: " + errorThrown);
-				console.log("responseText: " + responseText);
-			}
-		});
+function deleteRowTask(table, deleteButton, editButton, restUrl) {
+	$.ajax({
+		url : restUrl + table.rows('.selected').data()[0][0],
+		type : "DELETE",
+		success : function(data) {
+			table.row('.selected').remove().draw(false);
+			disableButton(deleteButton);
+			disableButton(editButton);
+		},
+		error : function(request, status, errorThrown, responseText) {
+			console.log("--------deleteRowTask-----------");
+			console.log("request: " + request);
+			console.log("status: " + status);
+			console.log("errorThrown: " + errorThrown);
+			console.log("responseText: " + responseText);
+		}
 	});
 }
 
