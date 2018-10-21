@@ -2,6 +2,7 @@ package com.gomeetdr.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,16 @@ import com.gomeetdr.modal.Doctor;
 import com.gomeetdr.repository.DoctorRepository;
 import com.gomeetdr.utils.NotFoundException;
 
+/**
+ * The rest service for the doctors.
+ * 
+ * @author parvajig
+ *
+ */
 @Service
 public class DoctorService {
-
+	private static final Logger logger = Logger.getLogger(DoctorService.class);
+	
 	@Autowired
 	private DoctorRepository doctorRepository;
 
@@ -24,14 +32,16 @@ public class DoctorService {
 		if (doctorRepository.exists(doctor.getId())) {
 			return doctorRepository.save(doctor);
 		}
-		throw new NotFoundException("Could not update doctor because given id does not exists");
+		logger.error("Could not update the doctor because given id does not exists.");
+		throw new NotFoundException("Could not update the doctor because given id does not exists.");
 	}
 
 	public Doctor getDoctor(Long id) throws NotFoundException {
 		if (doctorRepository.exists(id)) {
 			return doctorRepository.findOne(id);
 		}
-		throw new NotFoundException("Could not get doctor because given id does not exists");
+		logger.error("Could not get the doctor because given id does not exists.");
+		throw new NotFoundException("Could not get the doctor because given id does not exists.");
 	}
 
 	public Iterable<Doctor> getAllDoctors() {
@@ -40,7 +50,8 @@ public class DoctorService {
 
 	public void deleteDoctor(Long id) throws NotFoundException {
 		if (!doctorRepository.exists(id)) {
-			throw new NotFoundException("Could not delete doctor because given id does not exists.");
+			logger.error("Could not delete the doctor because given id does not exists.");
+			throw new NotFoundException("Could not delete the doctor because given id does not exists.");
 		}
 		doctorRepository.delete(id);
 	}
@@ -49,6 +60,7 @@ public class DoctorService {
 		if (doctorRepository.exists(id)) {
 			return doctorRepository.findOne(id).getAppointments();
 		}
+		logger.error("Could not get appointments because given id does not exists.");
 		throw new NotFoundException("Could not get appointments because given id does not exists.");
 	}
 }

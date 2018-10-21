@@ -1,104 +1,165 @@
 <%@include file="header.jsp" %>
-<html lang="en">
 <head>
-<title>Dr. Appointment Application</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<title><fmt:message key="doctor.appointment.title" /></title>
 <script>
-
 $(document).ready(function() {
 	var t = $('#drAppointmentsTable').DataTable( {
-		"order": [[ 4, "desc" ]],
-		responsive: true
+		"order": [[ 0, "desc" ]],
+		responsive: true,
+		colReorder: true,
+		"language": {
+			"search": "<fmt:message key="datatable.search" />",
+            "lengthMenu": "<fmt:message key="datatable.lengthMenu" />",
+            "zeroRecords": "<fmt:message key="datatable.zeroRecords" />",
+            "info": "<fmt:message key="datatable.info" />",
+            "infoEmpty": "<fmt:message key="datatable.infoEmpty" />",
+            "infoFiltered": "<fmt:message key="datatable.infoFiltered" />",
+            "paginate": {
+            	"previous": "<fmt:message key="datatable.previous" />",
+                "next": "<fmt:message key="datatable.next" />"
+              }
+        }
     });
+	
+	tableSearch($('#drAppointmentsTable tfoot th'), t);
 	
 	hideColumnById(t, 0);
 	
-	$("#drName").on('change', function(){
-		t.clear().draw();
-		getAppointments($("#drName").val());
+	setDateTimePickerFixedValues($('#fromDateAndTime'));
+	setDateTimePickerFixedValues($('#toDateAndTime'));
+	
+	$('#searchFormButton').on('click', function () {
+		$.ajax('/api/appointment/search', {
+		    type: 'POST',
+		    contentType: 'application/json; charset=UTF-8',
+		    dataType: 'json',
+		    data: JSON.stringify({
+				doctorId : $('#doctorName').val(),
+				patientName : $("#patientName").val(),
+				fromTime : $("#fromDate").val(),
+				toTime : $("#toDate").val()})
+		}).done(function (data, textStatus, jqXHR) {
+			console.log("--Successful submission of search criteria form data--");
+			t.clear().draw();
+			for (var i in data) {
+				t.row.add( [
+        			data[i].id,
+        			data[i].name,
+        			data[i].contactNumber,
+        			data[i].email,
+        			data[i].doctorName,
+        			data[i].startTime,
+        			data[i].endTime
+        			] ).draw( false );
+            }
+		}).fail(function (jqXHR, textStatus, errorThrown) {
+		    console.log('fail: status=' + jqXHR.status + ', textStatus=' + textStatus);
+		});
+		return false;
 	});
-	 
+	
 	$.ajax({
 	       type: "GET",
 	       url:"/api/doctor/",
 	       dataType: "json",
 	       success: function (responseData) {
 	       	var div_data;
-	       	for (var i in responseData) 
-	           {
+	       	for (var i in responseData) {
 	            	div_data+="<option value=\""+responseData[i].id+"\">"+responseData[i].name+"</option>";
-	           }
-	       	console.log("div_data: "+ div_data);
-	       	$('#drName').append(div_data); 
+	        }
+	       	$('#doctorName').append(div_data); 
 	       }
 	});
-	
-	function getAppointments(doctorId) {
-		$.ajax({
-	        type: "GET",
-	        url: "/api/doctor/"+doctorId+"/appointments",
-	        success: function (responseData) {
-	        	//var json_obj = $.parseJSON(responseData);//parse JSON
-	            for (var i in responseData) 
-	            {
-	            	if(responseData[i].doctor != null) {
-		            	var appointmentList = responseData[i].doctor.appointments;
-		           		t.row.add( [
-		           			responseData[i].id,
-			           		responseData[i].name,
-			           		responseData[i].contactNumber,
-			           		responseData[i].email,
-			           		responseData[i].startTime,
-			           		responseData[i].endTime
-		           			] ).draw( false );
-		           		
-		           		if(appointmentList.length > 1 && appointmentList != undefined) {
-			            	for (var j in appointmentList) {
-			            		if(j != 0) {
-				            		t.row.add( [
-				            			responseData[i].doctor.appointments[j].id,
-					            		responseData[i].doctor.appointments[j].name,
-					            		responseData[i].doctor.appointments[j].contactNumber,
-					            		responseData[i].doctor.appointments[j].email,
-					            		responseData[i].doctor.appointments[j].startTime,
-					            		responseData[i].doctor.appointments[j].endTime
-				            			] ).draw( false );
-				            		
-			            		}
-			            	}
-		           		}
-	            	}
-	            }
-	        },
-	        error: function (request, status, error) {
-	        	console.log(request);
-	        	console.log(status);
-	        	console.log(error);
-	        }
-	    });
-	}//End of function
 });
 </script>
 </head>
 <body>
-	<label for="drName"><span class="glyphicon glyphicon-plus"></span> Select Doctor: </label>
-	<select class="form-control selectpicker btn-primary" id="drName" style="width: auto">
-		<option value="0"></option>
-	</select>
+	<div class="row">
+		<div class="col-xs-12">
+			<form id="searchForm">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+						<div class="form-group required">
+							<label for="doctorName" class="control-label"><fmt:message
+									key="doctor.modal.drname" /></label>
+							<div>
+								<select id="doctorName" name="doctorName" class="form-control"><option
+										value="0">
+										<fmt:message key="doctor.appointment.option.all" /></option></select>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+						<div class="form-group required">
+							<label for="patientName" class="control-label"><fmt:message
+									key="appointment.modal.patientname" /></label>
+							<div>
+								<input id="patientName" type="text" name="patientName"
+									class="form-control">
+							</div>
+						</div>
+					</div>
+					<!-- /.col- -->
+					<div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">
+						<label for="fromDateAndTime" class="control-label"><fmt:message
+								key="doctor.appointment.from.date.time.label" /></label>
+						<div class='input-group date' id='fromDateAndTime'>
+							<input type='text' class="form-control" id="fromDate" required />
+							<span class="input-group-addon"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">
+						<label for="toDateAndTime" class="control-label"><fmt:message
+								key="doctor.appointment.to.date.time.label" /></label>
+						<div class='input-group date' id='toDateAndTime'>
+							<input type='text' class="form-control" id="toDate" required /> <span
+								class="input-group-addon"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<!-- /.col- -->
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+						<div class="clearfix">&nbsp;</div>
+						<button type="submit" id="searchFormButton"
+							class="btn btn-primary">
+							<fmt:message key="common.button.search" />
+						</button>
+					</div>
+					<!-- /.col- -->
+				</div>
+			</form>
+		</div>
+		<!-- /.col-xs-12 -->
+	</div>
+	<!-- /.row -->
+
 	<div id="drAppointmentsTableDiv">
-		<table id="drAppointmentsTable" class="table table-striped table-bordered dt-responsive commonTable" style="width: 100%">
+		<table id="drAppointmentsTable" class="display" style="width: 100%">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>Patient Name</th>
-					<th>Phone</th>
-					<th>E-mail</th>
-					<th>Start time</th>
-					<th>End time</th>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="common.table.heading.name" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="doctor.modal.drname" /></th>
+					<th><fmt:message key="appointment.modal.starttime" /></th>
+					<th><fmt:message key="appointment.modal.endtime" /></th>
 				</tr>
 			</thead>
+			<tfoot>
+				<tr>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="common.table.heading.name" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="doctor.modal.drname" /></th>
+					<th><fmt:message key="appointment.modal.starttime" /></th>
+					<th><fmt:message key="appointment.modal.endtime" /></th>
+				</tr>
+			</tfoot>
 		</table>
 	</div>
 </body>

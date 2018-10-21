@@ -1,21 +1,31 @@
 <%@include file="header.jsp" %>
-<html lang="en">
 <head>
-<title>Dr. Appointment Application</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<title><fmt:message key="appointment.title" /></title>
 <script>
 $(document).ready(function() {
 	var appointmentRest = "/api/appointment/";
 	var doctorRest = "/api/doctor/";
+	
 	var t = $('#appointmentTable').DataTable( {
-		"order": [[ 0, "desc" ]],
-		responsive: true
+		"order": [[ 9, "desc" ]],
+		responsive: true,
+		colReorder: true,
+		"language": {
+			"search": "<fmt:message key="datatable.search" />",
+            "lengthMenu": "<fmt:message key="datatable.lengthMenu" />",
+            "zeroRecords": "<fmt:message key="datatable.zeroRecords" />",
+            "info": "<fmt:message key="datatable.info" />",
+            "infoEmpty": "<fmt:message key="datatable.infoEmpty" />",
+            "infoFiltered": "<fmt:message key="datatable.infoFiltered" />",
+            "paginate": {
+            	"previous": "<fmt:message key="datatable.previous" />",
+                "next": "<fmt:message key="datatable.next" />"
+              }
+        }
     });
 	
-	var endTimeId = $('#endTime');
-	var startTimeId = $('#startTime');
+	tableSearch($('#appointmentTable tfoot th'), t);
+	
 	hideColumnById(t, 0);
 	hideColumnById(t, 4);
 	hideColumnById(t, 7);
@@ -25,14 +35,14 @@ $(document).ready(function() {
 	disableButton($('#editRow'));
 	tableSelectDeselectFunction($('#appointmentTable tbody'), t, $('#editRow'), $('#deleteRow'))
 	
-	setDateTimePickerFixedValues(startTimeId);
-	setDateTimePickerFixedValues(endTimeId);
+	setDateTimePickerFixedValues($('#startTime'));
+	setDateTimePickerFixedValues($('#endTime'));
 	
-	startTimeId.on("dp.change", function(e) {
+	$('#startTime').on("dp.change", function(e) {
 	   	var d = new Date(e.date);
 	   	d.setHours(d.getHours()+1);
     
-		endTimeId.data("DateTimePicker").date(d);
+		$('#endTime').data("DateTimePicker").date(d);
     });
 	
 	$('#deleteRow').on('click', function() {
@@ -76,52 +86,8 @@ $(document).ready(function() {
             for (var i in responseData) {
             	if(responseData[i].doctor != null) {
 	            	var appointmentList = responseData[i].doctor.appointments;
-	            	/* console.log("start of responseData");
-	           		console.log(responseData[i].id);
-	           		console.log(responseData[i].name);
-	           		console.log(responseData[i].contactNumber);
-	           		console.log(responseData[i].email);
-	           		console.log(responseData[i].doctor.id);
-	           		console.log(responseData[i].doctor.name);
-	           		console.log(responseData[i].doctor.type);
-	           		console.log(responseData[i].doctor.email);
-	           		console.log(responseData[i].doctor.contactNumber);
-	           		console.log(responseData[i].startTime);
-	           		console.log(responseData[i].endTime);
-	           		console.log("end of responseData"); */
-	           		
-	           		t.row.add( [
-	           			responseData[i].id,
-		           		responseData[i].name,
-		           		responseData[i].contactNumber,
-		           		responseData[i].email,
-		           		responseData[i].doctor.id,
-		           		responseData[i].doctor.name,
-		           		responseData[i].doctor.type,
-		           		responseData[i].doctor.email,
-		           		responseData[i].doctor.contactNumber,
-		           		responseData[i].startTime,
-		           		responseData[i].endTime
-	           			] ).draw( false );
-	           		
-	           		
-	           		if(appointmentList.length > 1 && appointmentList != undefined) {
+	           		if(appointmentList != null && appointmentList != undefined) {
 		            	for (var j in appointmentList) {
-		            		if(j != 0) {
-			            		/* console.log("start of appointments")
-			            		console.log(responseData[i].doctor.appointments[j].id);
-			            		console.log(responseData[i].doctor.appointments[j].name);
-			            		console.log(responseData[i].doctor.appointments[j].contactNumber);
-			            		console.log(responseData[i].doctor.appointments[j].email);
-			            		console.log(responseData[i].doctor.id);
-			            		console.log(responseData[i].doctor.name);
-			            		console.log(responseData[i].doctor.type);
-			            		console.log(responseData[i].doctor.email);
-			            		console.log(responseData[i].doctor.contactNumber);
-			            		console.log(responseData[i].doctor.appointments[j].startTime);
-			            		console.log(responseData[i].doctor.appointments[j].endTime);
-			            		console.log("end of appointments"); */
-			            		
 			            		t.row.add( [
 			            			responseData[i].doctor.appointments[j].id,
 				            		responseData[i].doctor.appointments[j].name,
@@ -136,10 +102,9 @@ $(document).ready(function() {
 				            		responseData[i].doctor.appointments[j].endTime
 			            			] ).draw( false );
 			            		
-		            		}
 		            	}
-	           		}
-            	}
+		            }
+	           	}
             }
         },
         error : function(request, status, errorThrown, responseText) {
@@ -183,82 +148,132 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<button id="addRow" class="btn btn-success btn-md" data-toggle="modal" data-target="#addDrModal">Add</button>
-<button id="editRow" class="btn btn-warning btn-md" data-toggle="modal" data-target="#addDrModal">Edit</button>
-<button id="deleteRow" class="btn btn-danger btn-md">Delete</button>
+	<button id="addRow" class="btn btn-success btn-md" data-toggle="modal"
+		data-target="#addDrModal">
+		<fmt:message key="common.button.add" />
+	</button>
+	<button id="editRow" class="btn btn-warning btn-md" data-toggle="modal"
+		data-target="#addDrModal">
+		<fmt:message key="common.button.edit" />
+	</button>
+	<button id="deleteRow" class="btn btn-danger btn-md">
+		<fmt:message key="common.button.delete" />
+	</button>
 
-<div class="modal fade" id="addDrModal" role="dialog">
+	<div class="modal fade" id="addDrModal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Add appointment</h4>
+					<h4 class="modal-title">
+						<fmt:message key="appointment.modal.title" />
+					</h4>
 				</div>
 				<div class="modal-body">
-			          <form role="form" id="bookAppointmentForm">
-			          	<div class="form-group">
-			              <input type="hidden" id="patientId" name="patientId" value="0">
-			            </div>
-			            <div class="form-group">
-			              <label for="patientName"><span class="glyphicon glyphicon-user"></span> Patient Name</label>
-			              <input type="text" class="form-control" id="patientName" placeholder="Enter patient name" required>
-			            </div>
-			            <div class="form-group">
-			              <label for="email"><span class="glyphicon glyphicon-envelope"></span> Email</label>
-			              <input type="email" class="form-control" id="email" placeholder="Enter email" required>
-			            </div>
-			            <div class="form-group">
-			              <label for="phone"><span class="glyphicon glyphicon-phone"></span> Mobile Number</label>
-			              <input type="text" class="form-control" id="phone" placeholder="Enter mobile number" required>
-			            </div>
-			            <div class="form-group">
-			              <label for="drName"><span class="glyphicon glyphicon-plus"></span> Dr. Name</label>
-			              <select class="form-control selectpicker" id="drName"></select>
-			            </div>
-			            <div class="form-group">
-			            	<label for="startTime"><span class="glyphicon glyphicon-time"></span> Start Time</label>
-					        <div class='input-group date' id='startTime'>
-					          <input type='text' class="form-control" id="startDate" required/>
-					          <span class="input-group-addon">
-					                        <span class="glyphicon glyphicon-calendar"></span>
-					          </span>
-					        </div>
-				      	</div>
+					<form role="form" id="bookAppointmentForm">
 						<div class="form-group">
-						<label for="endTime"><span class="glyphicon glyphicon-time"></span> End Time</label>
-					        <div class='input-group date' id='endTime'>
-					          <input type='text' class="form-control" id="endDate" required disabled/>
-					          <span class="input-group-addon">
-					                        <span class="glyphicon glyphicon-calendar"></span>
-					          </span>
-					        </div>
-					    </div>
-			            <div class="modal-footer">
-							<button id="submitRow" type="submit" class="btn btn-success btn-md">submit</button>
-							<button id="closeAddDrDialog" type="button" class="btn btn-danger btn-md" data-dismiss="modal">Close</button>
+							<input type="hidden" id="patientId" name="patientId" value="0">
 						</div>
-			          </form>
-        		</div>
+						<div class="form-group">
+							<label for="patientName"><span
+								class="glyphicon glyphicon-user"></span> <fmt:message
+									key="appointment.modal.patientname" /></label> <input type="text"
+								class="form-control" id="patientName"
+								placeholder="<fmt:message key="appointment.modal.placeholder.patientname" />"
+								required>
+						</div>
+						<div class="form-group">
+							<label for="email"><span
+								class="glyphicon glyphicon-envelope"></span> <fmt:message
+									key="common.table.heading.email" /></label> <input type="email"
+								class="form-control" id="email"
+								placeholder="<fmt:message key="common.modal.placeholder.email" />"
+								required>
+						</div>
+						<div class="form-group">
+							<label for="phone"><span
+								class="glyphicon glyphicon-phone"></span> <fmt:message
+									key="common.table.heading.phone" /></label> <input type="text"
+								class="form-control" id="phone"
+								placeholder="<fmt:message key="common.modal.placeholder.phone" />"
+								required>
+						</div>
+						<div class="form-group">
+							<label for="drName"><span
+								class="glyphicon glyphicon-plus"></span> <fmt:message
+									key="doctor.modal.drname" /></label> <select
+								class="form-control selectpicker" id="drName"></select>
+						</div>
+						<div class="form-group">
+							<label for="startTime"><span
+								class="glyphicon glyphicon-time"></span> <fmt:message
+									key="appointment.modal.starttime" /></label>
+							<div class='input-group date' id='startTime'>
+								<input type='text' class="form-control" id="startDate" required />
+								<span class="input-group-addon"> <span
+									class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="endTime"><span
+								class="glyphicon glyphicon-time"></span> <fmt:message
+									key="appointment.modal.endtime" /></label>
+							<div class='input-group date' id='endTime'>
+								<input type='text' class="form-control" id="endDate" required
+									disabled /> <span class="input-group-addon"> <span
+									class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button id="submitRow" type="submit"
+								class="btn btn-success btn-md">
+								<fmt:message key="common.button.submit" />
+							</button>
+							<button id="closeAddDrDialog" type="button"
+								class="btn btn-danger btn-md" data-dismiss="modal">
+								<fmt:message key="common.button.close" />
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
-<div id="appointmentTableDiv">
-	<table id="appointmentTable" class="table table-striped table-bordered responsive commonTable" style="width: 100%">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Name</th>
-				<th>Phone</th>
-				<th>Email</th>
-				<th>Dr. Id</th>
-				<th>Dr. Name</th>
-				<th>Dr. Type</th>
-				<th>Dr. email</th>
-				<th>Dr. contact number</th>
-				<th>Start time</th>
-				<th>End time</th>
-			</tr>
-		</thead>
-	</table>
-</div>
+
+	<div id="appointmentTableDiv">
+		<table id="appointmentTable" class="display" style="width: 100%">
+			<thead>
+				<tr>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="common.table.heading.name" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="doctor.modal.drname" /></th>
+					<th><fmt:message key="doctor.modal.drtype" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="appointment.modal.starttime" /></th>
+					<th><fmt:message key="appointment.modal.endtime" /></th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="common.table.heading.name" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="doctor.modal.drname" /></th>
+					<th><fmt:message key="doctor.modal.drtype" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="appointment.modal.starttime" /></th>
+					<th><fmt:message key="appointment.modal.endtime" /></th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
 </body>

@@ -4,47 +4,34 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
- * The entity class for the appointments.
+ * The entity class for the search response which contains appointment details.
  * 
  * @author parvajig
  *
  */
 @Entity
-public class Appointment implements Serializable {
+public class SearchResponse implements Serializable {
 
 	private static final long serialVersionUID = 8135449394063890134L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull
 	private String name;
 
-	@NotNull
 	private String contactNumber;
 
 	private String email;
 
-	@ManyToOne
-	@JoinColumn(name = "doctor_id")
 	@NotNull
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-	@JsonIdentityReference(alwaysAsId = false)
-	private Doctor doctor;
+	private String doctorName;
 
 	@NotNull
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
@@ -54,16 +41,16 @@ public class Appointment implements Serializable {
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date endTime;
 
-	public Appointment() {
+	public SearchResponse() {
 	}
 
-	public Appointment(Long id, String name, String contactNumber, String email, Doctor doctor, Date startTime,
+	public SearchResponse(Long id, String name, String contactNumber, String email, String doctorName, Date startTime,
 			Date endTime) {
 		this.id = id;
 		this.name = name;
 		this.contactNumber = contactNumber;
 		this.email = email;
-		this.doctor = doctor;
+		this.doctorName = doctorName;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
@@ -100,12 +87,12 @@ public class Appointment implements Serializable {
 		this.email = email;
 	}
 
-	public Doctor getDoctor() {
-		return doctor;
+	public String getDoctorName() {
+		return doctorName;
 	}
 
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
+	public void setDoctor(String doctorName) {
+		this.doctorName = doctorName;
 	}
 
 	public Date getStartTime() {
