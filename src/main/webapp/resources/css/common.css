@@ -6,24 +6,17 @@ body {
     padding-top: 20px;
 }
 
-.commonTable td, th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-.commonTable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #9393ff;
-    color: white;
-}
-
 .modal-body {
 	padding: 20px 30px;
 }
 
 #mynavbar-nav li:hover {
-  background-color: #ffffff;
-  color: #EEA200;
+	background-color: #ffffff;
+	color: #EEA200;
+}
+
+tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
 }

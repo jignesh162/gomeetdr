@@ -1,29 +1,35 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
 <%@include file="header.jsp" %>
 <html>
 <head>
-	<meta charset="ISO-8859-1">
-	<title>GoMeetDoctor</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title><fmt:message key="home.title" /></title>
 </head>
 <body>
 	<div class="container">
-	  <h2>Current feature list</h2>
+	  <h2><fmt:message key="home.current.feature.list" /></h2>
 	  <div class="list-group">
-	    <a href="/doctors" class="list-group-item list-group-item-success">Doctor -- User can add/edit/delete doctor.<span class="badge">Done</span></a>
-	    <a href="/appointments" class="list-group-item list-group-item-success">Appointment -- User can book/edit/delete an appointment with listed doctors.<span class="badge">Done</span></a>
-	    <a href="/dr_appointments" class="list-group-item list-group-item-success">Dr-Appointment -- User can check all the appointments for particular doctor.<span class="badge">Done</span></a>
+	    <a href="/doctors" class="list-group-item list-group-item-success">
+	    	<fmt:message key="home.current.feature.doctor" /><span class="badge"><fmt:message key="home.done" /></span></a>
+	    <a href="/appointments" class="list-group-item list-group-item-success">
+	    	<fmt:message key="home.current.feature.appointment" /><span class="badge"><fmt:message key="home.done" /></span></a>
+	    <a href="/dr_appointments" class="list-group-item list-group-item-success">
+	    	<fmt:message key="home.current.feature.doctor.appointment" /><span class="badge"><fmt:message key="home.done" /></span></a>
+	    <a href="/dr_appointments" class="list-group-item list-group-item-success">
+	    	<fmt:message key="home.current.feature.search.by.criteria" /><span class="badge"><fmt:message key="home.done" /></span></a>
+	    <a href="/home" class="list-group-item list-group-item-success">
+	    	<fmt:message key="home.translation" /><span class="badge"><fmt:message key="home.done" /></span></a>
 	  </div>
 	</div>
 	<div class="container">
-	  <h2>Upcoming feature/validations list</h2>
+	  <h2><fmt:message key="home.upcoming.feature.list" /></h2>
 	  <div class="list-group">
-	    <a href="#" class="list-group-item list-group-item-info">Doctor -- What if doctor is on leave for particular time period?<span class="badge">In progress</span></a>
-	    <a href="#" class="list-group-item list-group-item-danger">Appointment -- What if someone has already booked appointment with same time and same doctor?<span class="badge">TODO</span></a>
-	    <a href="#" class="list-group-item list-group-item-danger">Dr-Appointment -- Make search possible by dates.<span class="badge">TODO</span></a>
-	    <a href="#" class="list-group-item list-group-item-danger">Make possible to delete appointments or doctors in bulk.<span class="badge">TODO</span></a>
-	    <a href="#" class="list-group-item list-group-item-danger">Make better user interface of web-site.<span class="badge">TODO</span></a>
+	    <a href="#" class="list-group-item list-group-item-info">
+	    	<fmt:message key="home.upcoming.feature.doctor" /><span class="badge"><fmt:message key="home.inprogress" /></span></a>
+	    <a href="#" class="list-group-item list-group-item-danger">
+	    	<fmt:message key="home.upcoming.feature.appointment" /><span class="badge"><fmt:message key="home.todo" /></span></a>
+	    <a href="#" class="list-group-item list-group-item-danger">
+	    	<fmt:message key="home.upcoming.feature.extra1" /><span class="badge"><fmt:message key="home.todo" /></span></a>
+	    <a href="#" class="list-group-item list-group-item-danger">
+	    	<fmt:message key="home.upcoming.feature.extra2" /><span class="badge"><fmt:message key="home.todo" /></span></a>
 	  </div>
 	</div>
 </body>

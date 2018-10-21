@@ -28,6 +28,7 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	 * Count number of appointments by doctor id
 	 * 
 	 * @param id The id of doctor
+	 * @return Long The count of appointments
 	 */
     @Query("SELECT COUNT(a) FROM Appointment a WHERE doctor.id = ?")
 	Long countAppointmentsByDrId(Long id);

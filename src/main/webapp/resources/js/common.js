@@ -31,6 +31,27 @@ function tableSelectDeselectFunction(tableWithTBody, table, editButton,
 	});
 }
 
+//This function add the input field in table column's footer which is useful for column wise filtering.
+function tableSearch(tableFooterTh, table) {
+	tableFooterTh.each(function() {
+		var title = $(this).text();
+		$(this)
+				.html(
+						'<input type="text" placeholder="Search ' + title
+								+ '" />');
+	});
+
+	table.columns().every(function() {
+		var that = this;
+
+		$('input', this.footer()).on('keyup change', function() {
+			if (that.search() !== this.value) {
+				that.search(this.value).draw();
+			}
+		});
+	});
+}
+
 function deleteRowTask(table, deleteButton, editButton, restUrl) {
 	$.ajax({
 		url : restUrl + table.rows('.selected').data()[0][0],
@@ -52,7 +73,8 @@ function deleteRowTask(table, deleteButton, editButton, restUrl) {
 
 function deleteAllAppointmentsByDrId(table, deleteButton, editButton, restUrl) {
 	$.ajax({
-		url : "/api/appointment/doctor/" + table.rows('.selected').data()[0][0],
+		url : "/api/appointment/doctor/"
+				+ table.rows('.selected').data()[0][0],
 		type : "DELETE",
 		success : function(data) {
 			deleteRowTask(table, deleteButton, editButton, restUrl);
@@ -69,11 +91,19 @@ function deleteAllAppointmentsByDrId(table, deleteButton, editButton, restUrl) {
 
 function setDateTimePickerFixedValues(dateTimePickerId) {
 	dateTimePickerId.datetimepicker({
-		format: 'DD-MM-YYYY HH:mm',
+		format : 'DD-MM-YYYY HH:mm',
 		//Here we have disabled time from 00:00-08:00 hours and 20:00-24:00 hours. That means user can only select timing between 08AM to 08PM.
-        disabledTimeIntervals: [[moment({ h: 0 }), moment({ h: 8 })], [moment({ h: 19}), moment({ h: 24 })]],
-        enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-        //This setting will allow user to set minutes in multiple of 30 only.
-        stepping: 60
-    });
+		disabledTimeIntervals : [ [ moment({
+			h : 0
+		}), moment({
+			h : 8
+		}) ], [ moment({
+			h : 19
+		}), moment({
+			h : 24
+		}) ] ],
+		enabledHours : [ 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+		//This setting will allow user to set minutes in multiple of 30 only.
+		stepping : 60
+	});
 }

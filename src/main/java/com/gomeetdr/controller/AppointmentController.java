@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gomeetdr.modal.Appointment;
+import com.gomeetdr.modal.SearchCriteria;
+import com.gomeetdr.modal.SearchResponse;
 import com.gomeetdr.service.AppointmentService;
 import com.gomeetdr.utils.NotFoundException;
 
@@ -63,9 +65,10 @@ public class AppointmentController {
 	 * Delete all appointments by doctor id
 	 * 
 	 * @param id The id of doctor
+	 * @throws NotFoundException Throw an exception if the doctor id is not found.
 	 */
 	@RequestMapping(value = "/doctor/{id}", method = RequestMethod.DELETE)
-	public void deleteAppointmentsByDrId(@PathVariable Long id) {
+	public void deleteAppointmentsByDrId(@PathVariable Long id) throws NotFoundException {
 		service.deleteAppointmentsByDrId(id);
 	}
 	
@@ -73,9 +76,10 @@ public class AppointmentController {
 	 * Count appointments by doctor id
 	 * 
 	 * @param id The id of doctor
+	 * @throws NotFoundException Throw an exception if the doctor id is not found.
 	 */
 	@RequestMapping(value = "/doctor/{id}", method = RequestMethod.GET)
-	public Long countAppointmentsByDrId(@PathVariable Long id) {
+	public Long countAppointmentsByDrId(@PathVariable Long id) throws NotFoundException {
 		return service.countAppointmentsByDrId(id);
 	}
 
@@ -100,5 +104,16 @@ public class AppointmentController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Appointment update(@Valid @RequestBody Appointment appointment) throws NotFoundException {
 		return service.update(appointment);
+	}
+	
+	/**
+	 * Get all appointments by search criteria
+	 * 
+	 * @param SearchCriteria The object of SearchCriteria
+	 * @return The list of an appointment
+	 */
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public Iterable<SearchResponse> getAppointmentsBySearchCriteria(@Valid @RequestBody SearchCriteria searchCriteria) {
+		return service.getAppointmentsBySearchCriteria(searchCriteria);
 	}
 }

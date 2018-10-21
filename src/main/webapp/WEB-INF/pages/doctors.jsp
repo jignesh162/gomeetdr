@@ -1,26 +1,33 @@
 <%@include file="header.jsp" %>
-<html lang="en">
 <head>
-<title>Dr. Appointment Application</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<title><fmt:message key="doctor.title" /></title>
 <script>
 $(document).ready(function() {
 	var rest = "/api/doctor/";
 	var t = $('#doctorTable').DataTable( {
-		"order": [[ 0, "desc" ]],
-		responsive: true
-    } );
+		"order": [[ 1, "asc" ]],
+		responsive: true,
+		colReorder: true,
+		"language": {
+			"search": "<fmt:message key="datatable.search" />",
+            "lengthMenu": "<fmt:message key="datatable.lengthMenu" />",
+            "zeroRecords": "<fmt:message key="datatable.zeroRecords" />",
+            "info": "<fmt:message key="datatable.info" />",
+            "infoEmpty": "<fmt:message key="datatable.infoEmpty" />",
+            "infoFiltered": "<fmt:message key="datatable.infoFiltered" />",
+            "paginate": {
+            	"previous": "<fmt:message key="datatable.previous" />",
+                "next": "<fmt:message key="datatable.next" />"
+              }
+        }
+    });
+	
+	tableSearch($('#doctorTable tfoot th'), t);
+	
 	hideColumnById(t, 0);
 	disableButton($('#deleteRow'));
 	disableButton($('#editRow'));
 	tableSelectDeselectFunction($('#doctorTable tbody'), t, $('#editRow'), $('#deleteRow'));
-	
-	//TODO Need to test this....
-	$('#addDrModal').on('hidden.bs.modal', function () {
-		 $("#addDrModal").get(0).reset();
-	});
 	
 	$('#deleteRow').on('click', function() {
 		$.ajax({
@@ -29,10 +36,8 @@ $(document).ready(function() {
 			success : function(data) {
 				if (data != 0) {
 					var drName = t.rows('.selected').data()[0][1];
-					//TODO Want to show better confirmation dialog here
-					var confirmed = confirm(drName +" has already appointments booked with him/her.\n"+
-							"If you really want to delete this entry then you have to first delete all those appointments.\n"+
-							"Are you sure?");
+					//TODO Show better confirmation dialog here
+					var confirmed = confirm(drName +" <fmt:message key="doctor.delete.all.appointment.confrimation" />");
 					if (confirmed == true) {
 						deleteAllAppointmentsByDrId(t, $('#deleteRow'), $('#editRow'), rest);
 					}
@@ -111,17 +116,25 @@ $(document).ready(function() {
 </head>
 <body>
 	<button id="addRow" class="btn btn-success btn-md" data-toggle="modal"
-		data-target="#addDrModal">Add</button>
-	<button id="editRow" class="btn btn-warning btn-md"
-		data-toggle="modal" data-target="#addDrModal">Edit</button>
-	<button id="deleteRow" class="btn btn-danger btn-md">Delete</button>
+		data-target="#addDrModal">
+		<fmt:message key="common.button.add" />
+	</button>
+	<button id="editRow" class="btn btn-warning btn-md" data-toggle="modal"
+		data-target="#addDrModal">
+		<fmt:message key="common.button.edit" />
+	</button>
+	<button id="deleteRow" class="btn btn-danger btn-md">
+		<fmt:message key="common.button.delete" />
+	</button>
 
 	<div class="modal fade" id="addDrModal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Add doctor</h4>
+					<h4 class="modal-title">
+						<fmt:message key="doctor.modal.title" />
+					</h4>
 				</div>
 				<div class="modal-body">
 					<form role="form" id="addDoctorForm">
@@ -130,33 +143,43 @@ $(document).ready(function() {
 						</div>
 						<div class="form-group">
 							<label for="drname"><span
-								class="glyphicon glyphicon-user"></span> Dr. Name</label> <input
-								type="text" class="form-control" id="drname" name="drname"
-								placeholder="Enter dr. name" required>
+								class="glyphicon glyphicon-user"></span>
+							<fmt:message key="doctor.modal.drname" /></label> <input type="text"
+								class="form-control" id="drname" name="drname"
+								placeholder="<fmt:message key="doctor.modal.placeholder.name" />"
+								required>
 						</div>
 						<div class="form-group">
 							<label for="email"><span
-								class="glyphicon glyphicon-envelope"></span> Email</label> <input
-								type="email" class="form-control" id="dremail" name="dremail"
-								placeholder="Enter email">
+								class="glyphicon glyphicon-envelope"></span> <fmt:message
+									key="common.table.heading.email" /></label> <input type="email"
+								class="form-control" id="dremail" name="dremail"
+								placeholder="<fmt:message key="common.modal.placeholder.email" />">
 						</div>
 						<div class="form-group">
 							<label for="phone"><span
-								class="glyphicon glyphicon-phone"></span> Mobile Number</label> <input
-								type="text" class="form-control" id="drphone" name="drphone"
-								placeholder="Enter mobile number">
+								class="glyphicon glyphicon-phone"></span> <fmt:message
+									key="common.table.heading.phone" /></label> <input type="text"
+								class="form-control" id="drphone" name="drphone"
+								placeholder="<fmt:message key="common.modal.placeholder.phone" />">
 						</div>
 						<div class="form-group">
 							<label for="drtype"><span
-								class="glyphicon glyphicon-plus"></span> Dr. Type</label> <input
-								type="text" class="form-control" id="drtype" name="drtype"
-								placeholder="Enter dr. type" required>
+								class="glyphicon glyphicon-plus"></span> <fmt:message
+									key="doctor.modal.drtype" /></label> <input type="text"
+								class="form-control" id="drtype" name="drtype"
+								placeholder="<fmt:message key="doctor.modal.placeholder.type" />"
+								required>
 						</div>
 						<div class="modal-footer">
 							<button id="submitRow" type="submit"
-								class="btn btn-success btn-md">submit</button>
+								class="btn btn-success btn-md">
+								<fmt:message key="common.button.submit" />
+							</button>
 							<button id="closeAddDrDialog" type="button"
-								class="btn btn-danger btn-md" data-dismiss="modal">Close</button>
+								class="btn btn-danger btn-md" data-dismiss="modal">
+								<fmt:message key="common.button.close" />
+							</button>
 						</div>
 					</form>
 				</div>
@@ -164,17 +187,27 @@ $(document).ready(function() {
 		</div>
 	</div>
 
-<div id="doctorTableDiv">
-	<table id="doctorTable" class="table table-striped table-bordered dt-responsive commonTable" style="width: 100%">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Name</th>
-				<th>E-mail</th>
-				<th>Phone</th>
-				<th>Type</th>
-			</tr>
-		</thead>
-	</table>
-</div>
+	<div id="doctorTableDiv">
+		<table id="doctorTable" class="display commonTable"
+			style="width: 100%">
+			<thead>
+				<tr>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="common.table.heading.name" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="common.table.heading.type" /></th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th><fmt:message key="common.table.heading.id" /></th>
+					<th><fmt:message key="common.table.heading.name" /></th>
+					<th><fmt:message key="common.table.heading.email" /></th>
+					<th><fmt:message key="common.table.heading.phone" /></th>
+					<th><fmt:message key="common.table.heading.type" /></th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
 </body>
