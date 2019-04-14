@@ -11,4 +11,4 @@ phases:
       - mvn package
 artifacts:
   files:
-    - target/gomeetdr-0.0.1-SNAPSHOT.war
+    - target/gomeetdr-0.0.2.war
