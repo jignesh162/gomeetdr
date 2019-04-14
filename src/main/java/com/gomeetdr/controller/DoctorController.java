@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gomeetdr.modal.Appointment;
 import com.gomeetdr.modal.Doctor;
 import com.gomeetdr.service.DoctorService;
-import com.gomeetdr.utils.CanNotDeleteDoctor;
 import com.gomeetdr.utils.NotFoundException;
 
 /**

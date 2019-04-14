@@ -6,12 +6,19 @@
 	<artifactId>gomeetdr</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gomeetdr</name>
+	<packaging>war</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.2.RELEASE</version>
 	</parent>
+	
+	<properties>
+      <!-- The main class to start by executing java -jar -->
+      <start-class>com.gomeetdr.RunApplication</start-class>
+      <java.version>1.8</java.version>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -52,10 +59,13 @@
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 		</dependency>
+		<!-- marked the embedded servlet container as provided -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
 	<build>
 		<plugins>
 			<plugin>
