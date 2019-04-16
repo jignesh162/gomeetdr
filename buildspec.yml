@@ -7,7 +7,8 @@ phases:
   post_build:
     commands:
       - mvn package
+      - mkdir directoryToExtractTo
+      - jar xvf target/gomeetdr-0.0.2.war -C ./directoryToExtractTo
   artifacts:
     files:
-      - gomeetdr-0.0.2.war
-      - .ebextensions/**/*
+      - /directoryToExtractTo/**
