@@ -10,5 +10,5 @@ phases:
       - mv target/gomeetdr-0.0.2.war ./
 artifacts:
   files:
-    - gomeetdr-0.0.2/**/*
+    - gomeetdr-0.0.2.war/**/*
   discard-paths: yes
