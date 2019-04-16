@@ -9,6 +9,7 @@ phases:
       - mvn package
       - mkdir directoryToExtractTo
       - jar xvf target/gomeetdr-0.0.2.war -C ./directoryToExtractTo
-  artifacts:
-    files:
+artifacts:
+  files:
       - /directoryToExtractTo/**
+  discard-paths: yes
