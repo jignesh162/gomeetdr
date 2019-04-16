@@ -8,8 +8,8 @@ phases:
     commands:
       - mvn package
       - unzip target/gomeetdr-0.0.2.war -d directoryToExtractTo
-      - pwd
 artifacts:
   files:
       - '**/*'
-  discard-paths: yes
+  base-directory: directoryToExtractTo
+  name: gomeetdr-$(date +%Y-%m-%d)
