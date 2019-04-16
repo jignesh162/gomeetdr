@@ -7,8 +7,8 @@ phases:
   post_build:
     commands:
       - mvn package
-      - mkdir directoryToExtractTo
-      - jar xvf target/gomeetdr-0.0.2.war -C ./directoryToExtractTo
+      - sudo apt-get install zip unzip
+      - unzip target/gomeetdr-0.0.2.war -d ./directoryToExtractTo/
 artifacts:
   files:
       - /directoryToExtractTo/**
