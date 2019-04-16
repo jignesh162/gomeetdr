@@ -8,8 +8,8 @@ phases:
     commands:
       - mvn package
       - sudo apt-get install zip unzip
-      - unzip target/gomeetdr-0.0.2.war -d directoryToExtractTo/
+      - unzip target/gomeetdr-0.0.2.war -d /target/directoryToExtractTo/
 artifacts:
   files:
-      - target/directoryToExtractTo/**/*
+      - /target/directoryToExtractTo/**/*
   discard-paths: yes
