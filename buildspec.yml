@@ -4,11 +4,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn clean -U -Pcheckstyle
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - mvn package
+      - mvn clean -U install
 artifacts:
   files:
     - target/gomeetdr-0.0.2.war
