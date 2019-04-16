@@ -7,9 +7,9 @@ phases:
   post_build:
     commands:
       - mvn package
-      - sudo apt-get install zip unzip
-      - unzip target/gomeetdr-0.0.2.war -d /target/directoryToExtractTo/
+      - unzip target/gomeetdr-0.0.2.war -d directoryToExtractTo
+      - pwd
 artifacts:
   files:
-      - /target/directoryToExtractTo/**/*
+      - directoryToExtractTo/**/*
   discard-paths: yes
