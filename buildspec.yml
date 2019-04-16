@@ -7,8 +7,8 @@ phases:
   post_build:
     commands:
       - mvn package
-      - mv target/gomeetdr-0.0.2.war ./
+      - mv target/gomeetdr-0.0.2 ./
 artifacts:
   files:
-    - gomeetdr-0.0.2.war/**/*
+    - gomeetdr-0.0.2/**/*
   discard-paths: yes
