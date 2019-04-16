@@ -11,5 +11,5 @@ phases:
       - unzip target/gomeetdr-0.0.2.war -d ./directoryToExtractTo/
 artifacts:
   files:
-      - target/directoryToExtractTo/**
+      - target/directoryToExtractTo/**/*
   discard-paths: yes
