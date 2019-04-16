@@ -11,5 +11,5 @@ phases:
       - pwd
 artifacts:
   files:
-      - directoryToExtractTo/*
+      - '**/*'
   discard-paths: yes
