@@ -1,9 +1,14 @@
-version: 0.1
+version: 0.2
 
 phases:
   build:
     commands:
       - mvn clean -U install
+  post_build:
+    commands:
+      - mvn package
+      - mv target/gomeetdr-0.0.2.war ./
 artifacts:
   files:
-    - gomeetdr-0.0.2.war
+    - gomeetdr-0.0.2/**/*
+  discard-paths: yes
