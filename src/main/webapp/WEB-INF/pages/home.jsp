@@ -18,7 +18,7 @@
 	    <a href="/home" class="list-group-item list-group-item-success">
 	    	<fmt:message key="home.translation" /><span class="badge"><fmt:message key="home.done" /></span></a>
 	    <a href="/home" class="list-group-item list-group-item-success">
-	    	gomeetdr-0.0.2.war<span class="badge"><fmt:message key="home.done" /></span></a>
+	    	gomeetdr-0.0.2.war_test1<span class="badge"><fmt:message key="home.done" /></span></a>
 	  </div>
 	</div>
 	<div class="container">
