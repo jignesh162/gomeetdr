@@ -9,5 +9,5 @@ phases:
       - mvn package
   artifacts:
     files:
-      - '**/*'
-  base-directory: 'target/gomeetdr-0.0.2.war'
+      - gomeetdr-0.0.2.war
+      - .ebextensions/**/*
